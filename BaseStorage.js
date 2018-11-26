@@ -18,41 +18,17 @@ class StorageBase {
         return path.join(baseDir, year, month, day);
     }
 
-    generateUnique(dir, name, ext, i) {
-        let filename,
-            append = '';
-
-        if (i) {
-            append = '-' + i;
-        }
-
-        if (ext) {
-            filename = name + append + ext;
-        } else {
-            filename = name + append;
-        }
-
-        return this.exists(filename, dir).then((exists) => {
-            if (exists) {
-                i = i + 1;
-                return this.generateUnique(dir, name, ext, i);
-            } else {
-                return path.join(dir, filename);
-            }
-        });
-    }
-
     getUniqueFileName(image, targetDir) {
-        var ext = path.extname(image.name), name;
+        const ext = path.extname(image.name);
 
         // poor extension validation
         // .1 is not a valid extension
         if (!ext.match(/.\d/)) {
-            name = this.getSanitizedFileName(path.basename(image.name, ext));
-            return this.generateUnique(targetDir, name, ext, 0);
+            const name = this.getSanitizedFileName(path.basename(image.name, ext));
+            return path.join(targetDir, name, ext);
         } else {
-            name = this.getSanitizedFileName(path.basename(image.name));
-            return this.generateUnique(targetDir, name, null, 0);
+            const name = this.getSanitizedFileName(path.basename(image.name));
+            return path.join(targetDir, name);
         }
     }
 
