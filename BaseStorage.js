@@ -11,14 +11,15 @@ class StorageBase {
 
     getTargetDir(baseDir) {
         const date = moment(),
+            day = date.format('DD'),
             month = date.format('MM'),
             year = date.format('YYYY');
 
         if (baseDir) {
-            return path.join(baseDir, year, month);
+            return path.join(baseDir, year, month, day);
         }
 
-        return path.join(year, month);
+        return path.join(year, month, day);
     }
 
     generateUnique(dir, name, ext, i) {
